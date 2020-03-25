@@ -11,7 +11,7 @@ The data is modelled using a straight line. Used with continuous variables (Real
 
 The toal error of the linear model is the sum of the error of each point
 
-\sum_{i=1}^n r_i^2
+$\sum_{i=1}^n r_i^2$
 
 ## Example: 
 Let's say there exists a case where a dataset of House Size and Price is given. 
