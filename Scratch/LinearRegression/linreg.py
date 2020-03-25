@@ -1,40 +1,60 @@
-import numpy as np
 import matplotlib.pyplot as plt
+
+def mc(tdx, tdy):
+    sum_x = sum([a*b for a,b in zip(tdx,tdy)])
+    sum_y = sum([a*b for a,b in zip(tdx,tdx)])
+
+    mean_x = sum_x / len(tdx)
+    mean_y = sum_y / len(tdy)
+
+    ss_xy = sum_x - len(tdx) * mean_x * mean_y
+    ss_xx = sum_y - len(tdx) * mean_x * mean_x
+
+    m = ss_xy / ss_xx
+    c = mean_y - m * mean_x
+
+    return (m, c)
 
 # x : Size in square feet
 # y : Price in 1000s
-#                 [ x  , y  ]
 
-training_data = np.array(
-                [ [2104, 460],
-                  [1416, 232],
-                  [1534, 315],
-                  [ 852, 178],
-                  [ 400,  20],
-                  [1634, 345],
-                  [3452, 500],
-                  [2000, 450]
-                ])
+tdx = []
+tdy = []
+words = []
 
-#extracted_tdx = np.array([])
-#extracted_tdy = np.array([])
-#for i in training_data:
-#    extracted_tdx = np.append(extracted_tdx ,i[0])
-#    extracted_tdy = np.append(extracted_tdy, i[1])
-#
+# obviously it would be a better choice to import csv here but I just wanted
+# to do it this way
+with open('dataset.csv', 'r') as training_data:
+    lines = [line.rstrip() for line in training_data]
+
+for line in lines:
+    words.append(line.split(','))
+    #lint = map(int, words)
+
+for i in range(1, len(words)):
+    tdx.append(int(words[i][0]))
+    tdy.append(int(words[i][1]))
+
 # another way -- simpler
-tdx = [x[0] for x in training_data]
-tdy = [x[1] for x in training_data]
+# training_data = [[1,2],[3,4]]
+# tdx = [x[0] for x in training_data]
+# tdy = [x[1] for x in training_data]
 
 # find the best fit line
-m, c = np.polyfit(tdx, tdy, 1)
+#m, c = np.polyfit(tdx, tdy, 1)
+
+m, c = mc(tdx, tdy)
 
 # TODO: Learn polynomial curve fitting
 #print(np.polyfit(tdx, tdy, 2))
 
-tdx2 = np.array(tdx)
+#tdx2 = np.array(tdx)
+tdx2 = []
+for i in tdx:
+    tdx2.append(m * i + c)
+
 plt.plot(tdx, tdy, 'bo')
-plt.plot(tdx2, m * tdx2 + c)
+plt.plot(tdx2, tdx2)
 
 # enables multiple plotting windows
 #plt.figure()
