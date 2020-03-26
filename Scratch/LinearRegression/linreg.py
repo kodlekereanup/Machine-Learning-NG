@@ -1,16 +1,14 @@
 import matplotlib.pyplot as plt
 
 def mc(tdx, tdy):
-    sum_x = sum([a*b for a,b in zip(tdx,tdy)])
-    sum_y = sum([a*b for a,b in zip(tdx,tdx)])
 
-    mean_x = sum_x / len(tdx)
-    mean_y = sum_y / len(tdy)
+    mean_x = sum(tdx) / len(tdx)
+    mean_y = sum(tdy) / len(tdy)
 
-    ss_xy = sum_x - len(tdx) * mean_x * mean_y
-    ss_xx = sum_y - len(tdx) * mean_x * mean_x
+    ss_x = sum([(i - mean_x)**2 for i in tdx])
+    sp   = sum([(i - mean_x)*(j - mean_y) for i, j in zip(tdx, tdy)])
 
-    m = ss_xy / ss_xx
+    m = sp/ ss_x
     c = mean_y - m * mean_x
 
     return (m, c)
@@ -68,7 +66,7 @@ plt.show()
 print('Prediction Function: {}x + {}'.format(m, c))
 
 def predict(m, c):
-    x = int(input('Enter Size of House'))
+    x = int(input('Enter Size of House: '))
     print('Value of House is:{}'.format(m * x + c))
 
 predict(m, c)
